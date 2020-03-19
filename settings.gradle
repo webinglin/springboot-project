@@ -1,0 +1,5 @@
+rootProject.name = 'springboot-project'
+include 'boot-common'
+include 'boot-core'
+include 'boot-redis'
+include 'boot-web'

@@ -1,0 +1,8 @@
+dependencies {
+
+    implementation project(":boot-common"),
+            // redis
+            'org.springframework.boot:spring-boot-starter-data-redis',
+            "redis.clients:jedis:3.1.0"
+
+}

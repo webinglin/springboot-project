@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        maven {
+            url "${repo}"
+        }
+    }
+
+    dependencies {
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: "idea"
+
+allprojects {
+    group 'com.meiya.springboot'
+    version '1.0'
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    jar {
+        enabled = true
+    }
+
+    repositories {
+        maven {
+            url "${repo}"
+        }
+    }
+
+    configurations {
+        all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    configurations.all{
+        resolutionStrategy {
+            dependencySubstitution {
+//                解决springboot版本比较高，自动依赖高版本的elasticsearch相关jar包的问题，全部替换成低版本
+                substitute module('org.elasticsearch:elasticsearch') with module ("org.elasticsearch:elasticsearch:5.0.2")
+                substitute module('org.elasticsearch.client:transport') with module ("org.elasticsearch.client:transport:5.0.2")
+                substitute module('org.elasticsearch.plugin:x-pack-api') with module ("org.elasticsearch.plugin:x-pack-api:5.0.2")
+                substitute module('org.elasticsearch.client:x-pack-transport') with module ("org.elasticsearch.client:x-pack-transport:5.0.2")
+                substitute module('org.elasticsearch.plugin:transport-netty4-client') with module ("org.elasticsearch.plugin:transport-netty4-client:5.0.2")
+            }
+        }
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    [compileJava, javadoc, compileTestJava]*.options*.encoding = "UTF-8"
+
+
+
+}
+

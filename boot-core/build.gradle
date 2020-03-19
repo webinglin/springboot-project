@@ -1,0 +1,12 @@
+/* 主要是Mariadb相關的基礎功能邏輯 */
+dependencies {
+
+    implementation project(":boot-common"),
+            'org.springframework.boot:spring-boot-starter-aop',
+
+            // druid & mysql & mybatis-plus
+            'com.baomidou:mybatis-plus-boot-starter:3.1.2',
+            "com.alibaba:druid-spring-boot-starter:1.1.16",
+            "mysql:mysql-connector-java:8.0.18"
+
+}

@@ -1,0 +1,40 @@
+dependencies {
+    compile project(":boot-redis")
+    compile project(":boot-core")
+    compile project(":boot-common")
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web',
+            'org.apache.tomcat.embed:tomcat-embed-jasper',
+            'javax.servlet:jstl'
+}
+
+task clearJars(type: Delete) {
+    delete "$buildDir/libs/lib"
+    delete "$buildDir/libs/static"
+}
+
+task copyResources(type: Copy) {
+    from "src/main/webapp" into "$buildDir/libs/static"
+}
+
+task copyJars(type: Copy, dependsOn: 'clearJars') {
+    from configurations.runtime into "$buildDir/libs/lib"
+}
+
+bootJar {
+    excludes = ["*.jar"]
+
+    dependsOn copyJars
+    dependsOn copyResources
+
+    manifest {
+        // 指定依赖的JAR包
+        attributes 'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' '),
+                'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+    }
+    mainClassName = 'com.meiya.springboot.SpringWebApplication'
+    launchScript()
+}
+
