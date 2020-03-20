@@ -5,6 +5,8 @@ import com.meiya.springboot.bean.SysUserDept;
 import com.meiya.springboot.bean.SysUserGroup;
 import com.meiya.springboot.bean.SysUserRole;
 import com.meiya.springboot.common.util.StringUtil;
+import com.meiya.springboot.constants.BizConstants;
+import com.meiya.springboot.constants.FieldConstants;
 import com.meiya.springboot.dto.SysUserDTO;
 import com.meiya.springboot.mapper.user.SysUserDeptMapper;
 import com.meiya.springboot.mapper.user.SysUserGroupMapper;
@@ -84,7 +86,7 @@ public class SysUserServiceImpl implements SysUserService {
     private Map<String, Object> getDelUserIdMap(String userId) throws Exception {
         StringUtil.isBlank(userId,"用户ID为空");
         Map<String, Object> delMap = new HashMap<>();
-        delMap.put("USER_ID", userId);
+        delMap.put(FieldConstants.USER_ID, userId);
         return delMap;
     }
 
@@ -94,8 +96,8 @@ public class SysUserServiceImpl implements SysUserService {
             return;
         }
         Map<String, Object> selectMap = new HashMap<>();
-        selectMap.put("status", 1);
-        selectMap.put("USERNAME", userDTO.getUsername());
+        selectMap.put(FieldConstants.STATUS, BizConstants.STATUS_AVAIL);
+        selectMap.put(FieldConstants.USER_NAME, userDTO.getUsername());
         List<SysUser> userList = userMapper.selectByMap(selectMap);
         if (CollectionUtils.isNotEmpty(userList)) {
             throw new IllegalArgumentException("用户名已经存在");
@@ -107,8 +109,8 @@ public class SysUserServiceImpl implements SysUserService {
             return;
         }
         Map<String, Object> selectMap = new HashMap<>();
-        selectMap.put("status", 1);
-        selectMap.put("IDCARD", userDTO.getIdcard());
+        selectMap.put(FieldConstants.STATUS, BizConstants.STATUS_AVAIL);
+        selectMap.put(FieldConstants.USER_IDCARD, userDTO.getIdcard());
         List<SysUser> userList = userMapper.selectByMap(selectMap);
         if (CollectionUtils.isNotEmpty(userList)) {
             throw new IllegalArgumentException("身份证已经存在");
@@ -120,8 +122,8 @@ public class SysUserServiceImpl implements SysUserService {
             return;
         }
         Map<String, Object> selectMap = new HashMap<>();
-        selectMap.put("status", 1);
-        selectMap.put("USER_CODE", userDTO.getUserCode());
+        selectMap.put(FieldConstants.STATUS, BizConstants.STATUS_AVAIL);
+        selectMap.put(FieldConstants.USER_CODE, userDTO.getUserCode());
         List<SysUser> userList = userMapper.selectByMap(selectMap);
         if (CollectionUtils.isNotEmpty(userList)) {
             throw new IllegalArgumentException("编号已经存在");
@@ -195,7 +197,7 @@ public class SysUserServiceImpl implements SysUserService {
         StringUtil.isBlank(userDTO.getId(),"用户ID为空");
         SysUser u = userMapper.selectById(userDTO.getId());
         u.setUpdateTime(new Date());
-        u.setStatus(0);
+        u.setStatus(BizConstants.STATUS_DEL);
         if(StringUtils.isNotBlank(userDTO.getUpdatorId())) {
             u.setUpdatorId(userDTO.getUpdatorId());
         }

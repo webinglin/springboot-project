@@ -1,7 +1,12 @@
 import com.meiya.springboot.SpringWebApplication;
 import com.meiya.springboot.bean.*;
+import com.meiya.springboot.dto.SysAreaDTO;
 import com.meiya.springboot.dto.SysUserDTO;
+import com.meiya.springboot.service.area.SysAreaService;
+import com.meiya.springboot.service.dept.SysDeptService;
+import com.meiya.springboot.service.group.SysGroupService;
 import com.meiya.springboot.service.privilege.SysPrivilegeService;
+import com.meiya.springboot.service.role.SysRoleService;
 import com.meiya.springboot.service.user.SysUserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,8 +34,16 @@ public class JunitSpringWebApplicationTest {
     @Autowired
     private SysPrivilegeService sysPrivilegeService;
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private SysAreaService sysAreaService;
+    @Autowired
+    private SysGroupService sysGroupService;
+    @Autowired
+    private SysRoleService sysRoleService;
+    @Autowired
+    private SysDeptService sysDeptService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Test
     public void testMariadb() throws Exception{
@@ -190,6 +203,40 @@ public class JunitSpringWebApplicationTest {
     public void testQueryPrivilegesByUserId() throws Exception {
         List<SysPrivilege>  privilegeList = sysPrivilegeService.queryPrivilegesByUserId("rOEPTqe1Q1N-parzb63MBw");
         privilegeList.forEach(pri -> System.out.println(pri.getCode()));
+    }
+
+    @Test
+    public void testAddArea() throws Exception {
+        SysAreaDTO areaDTO = new SysAreaDTO();
+
+        areaDTO.setName("福建省厦门市思明区");
+        areaDTO.setParentId("0000000000000000000000");
+        areaDTO.setRemark("单元测试");
+        areaDTO.setSpell("FJSXMSSMQ");
+        areaDTO.setAliasName("思明区");
+        areaDTO.setAliasSpell("SMQ");
+        areaDTO.setLatitude(9999.23D);
+        areaDTO.setLongitude(6666.555D);
+        areaDTO.setCode("350200");
+        areaDTO.setCreatorId("1");
+        sysAreaService.addArea(areaDTO);
+    }
+
+    @Test
+    public void testEditArea() throws Exception {
+        SysAreaDTO areaDTO = new SysAreaDTO();
+        areaDTO.setId("BRL4fl-F65ZkLpAPkighxA");
+        areaDTO.setUpdatorId("222");
+        areaDTO.setCode("350201");
+        areaDTO.setRemark("单位测试 备注");
+        sysAreaService.editArea(areaDTO);
+    }
+
+    @Test
+    public void testDelArea() throws Exception {
+        SysAreaDTO areaDTO = new SysAreaDTO();
+        areaDTO.setId("BRL4fl-F65ZkLpAPkighxA");
+        sysAreaService.delArea(areaDTO);
     }
 
 
