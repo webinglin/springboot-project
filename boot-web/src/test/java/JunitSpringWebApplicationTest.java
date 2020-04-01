@@ -1,6 +1,7 @@
 import com.meiya.springboot.SpringWebApplication;
 import com.meiya.springboot.bean.*;
 import com.meiya.springboot.dto.SysAreaDTO;
+import com.meiya.springboot.dto.SysGroupDTO;
 import com.meiya.springboot.dto.SysUserDTO;
 import com.meiya.springboot.service.area.SysAreaService;
 import com.meiya.springboot.service.dept.SysDeptService;
@@ -198,7 +199,6 @@ public class JunitSpringWebApplicationTest {
         sysUserService.delUser(userDTO);
     }
 
-
     @Test
     public void testQueryPrivilegesByUserId() throws Exception {
         List<SysPrivilege>  privilegeList = sysPrivilegeService.queryPrivilegesByUserId("rOEPTqe1Q1N-parzb63MBw");
@@ -240,13 +240,57 @@ public class JunitSpringWebApplicationTest {
     }
 
 
+//    @Test
+//    public void testRedis() throws Exception {
+//        stringRedisTemplate.opsForValue().set("TEST_REDIS", "TESTREIDS");
+//        Assert.assertEquals("TESTREIDS", stringRedisTemplate.opsForValue().get("TEST_REDIS"));
+//    }
+
     @Test
-    public void testRedis() throws Exception {
-        stringRedisTemplate.opsForValue().set("TEST_REDIS", "TESTREIDS");
-        Assert.assertEquals("TESTREIDS", stringRedisTemplate.opsForValue().get("TEST_REDIS"));
+    public void testAddGroup() throws Exception {
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setName("测试用户组02");
+        groupDTO.setRemark("备注用户组02");
+        groupDTO.setCreatorId("test");
+        groupDTO.setUpdatorId("updator id");
+        sysGroupService.addGroup(groupDTO);
     }
 
 
+    @Test
+    public void testEditGroup() throws Exception {
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("GEq0QynC-j0Q2F05oWtlvw");
+        groupDTO.setUpdatorId("updatorId");
+//        groupDTO.setRemark("测试编辑动作");
+        groupDTO.setName("测试编辑组名");
+
+        sysGroupService.editGroup(groupDTO);
+    }
+
+    @Test
+    public void testDelGroup() throws Exception {
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("GEq0QynC-j0Q2F05oWtlvw\" or 1=1");
+        groupDTO.setUpdatorId("23333");
+        sysGroupService.delGroup(groupDTO);
+    }
+
+    @Test
+    public void testAllocateGroup() throws Exception {
+
+
+//        sysGroupService.add
+    }
+
+
+
+
+
+
+
+    // 用户组有哪些角色
+    // 用户组有哪些用户
     // 区域有哪些单位
     // 单位有哪些用户
     // 单位属于什么区域
@@ -256,8 +300,7 @@ public class JunitSpringWebApplicationTest {
     // 用户具备什么单位
     // 角色有那些权限
     // 角色有那些用户组
-    // 用户组有哪些角色
-    // 用户组有哪些用户
+
     // 添加/修改/删除 用户
     // 添加/修改/删除 用户组
     // 添加/修改/删除 角色

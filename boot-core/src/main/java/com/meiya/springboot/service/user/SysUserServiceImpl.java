@@ -1,5 +1,6 @@
 package com.meiya.springboot.service.user;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.meiya.springboot.bean.SysUser;
 import com.meiya.springboot.bean.SysUserDept;
 import com.meiya.springboot.bean.SysUserGroup;
@@ -195,7 +196,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void delUser(SysUserDTO userDTO) throws Exception {
         StringUtil.isBlank(userDTO.getId(),"用户ID为空");
-        SysUser u = userMapper.selectById(userDTO.getId());
+        SysUser u = new SysUser();
+        BeanUtils.copyProperties(userDTO, u);
         u.setUpdateTime(new Date());
         u.setStatus(BizConstants.STATUS_DEL);
         if(StringUtils.isNotBlank(userDTO.getUpdatorId())) {
