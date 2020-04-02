@@ -2,6 +2,7 @@ import com.meiya.springboot.SpringWebApplication;
 import com.meiya.springboot.bean.*;
 import com.meiya.springboot.dto.SysAreaDTO;
 import com.meiya.springboot.dto.SysGroupDTO;
+import com.meiya.springboot.dto.SysRoleDTO;
 import com.meiya.springboot.dto.SysUserDTO;
 import com.meiya.springboot.service.area.SysAreaService;
 import com.meiya.springboot.service.dept.SysDeptService;
@@ -264,7 +265,6 @@ public class JunitSpringWebApplicationTest {
         groupDTO.setUpdatorId("updatorId");
 //        groupDTO.setRemark("测试编辑动作");
         groupDTO.setName("测试编辑组名");
-
         sysGroupService.editGroup(groupDTO);
     }
 
@@ -277,15 +277,100 @@ public class JunitSpringWebApplicationTest {
     }
 
     @Test
-    public void testAllocateGroup() throws Exception {
-
-
-//        sysGroupService.add
+    public void testAddUsersToGroup() throws Exception {
+        List<SysUserDTO> userDTOList = new ArrayList<>();
+        SysUserDTO userDTO01 = new SysUserDTO();
+        userDTO01.setId("111");
+        SysUserDTO userDTO02 = new SysUserDTO();
+        userDTO02.setId("222");
+        SysUserDTO userDTO03 = new SysUserDTO();
+        userDTO03.setId("333");
+        userDTOList.add(userDTO01);
+        userDTOList.add(userDTO02);
+        userDTOList.add(userDTO03);
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("tvfVwg9YMc0D-5x_Al4aPg");
+        sysGroupService.addUsersToGroup(userDTOList,groupDTO);
     }
 
+    @Test
+    public void testDelUsersFromGroup() throws Exception {
+        List<SysUserDTO> userDTOList = new ArrayList<>();
+        SysUserDTO userDTO01 = new SysUserDTO();
+        userDTO01.setId("111");
+        userDTOList.add(userDTO01);
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("tvfVwg9YMc0D-5x_Al4aPg");
+        sysGroupService.delUsersFromGroup(userDTOList,groupDTO);
+    }
 
+    @Test
+    public void testReAllocateUsersToGroup() throws Exception {
+        List<SysUserDTO> userDTOList = new ArrayList<>();
+        SysUserDTO userDTO01 = new SysUserDTO();
+        userDTO01.setId("444");
+        SysUserDTO userDTO02 = new SysUserDTO();
+        userDTO02.setId("555");
+        SysUserDTO userDTO03 = new SysUserDTO();
+        userDTO03.setId("888");
+        userDTOList.add(userDTO01);
+        userDTOList.add(userDTO02);
+        userDTOList.add(userDTO03);
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("tvfVwg9YMc0D-5x_Al4aPg");
+        sysGroupService.reAllocateUsersToGroup(userDTOList,groupDTO);
+    }
 
+    @Test
+    public void testAddRolesToGroup() throws Exception {
+        List<SysRoleDTO> roleDTOList = new ArrayList<>();
+        SysRoleDTO roleDTO01 = new SysRoleDTO();
+        roleDTO01.setId("r1");
+        SysRoleDTO roleDTO02 = new SysRoleDTO();
+        roleDTO02.setId("r2");
+        SysRoleDTO roleDTO03 = new SysRoleDTO();
+        roleDTO03.setId("r3");
+        roleDTOList.add(roleDTO01);
+        roleDTOList.add(roleDTO02);
+        roleDTOList.add(roleDTO03);
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("tvfVwg9YMc0D-5x_Al4aPg");
+        sysGroupService.addRolesToGroup(roleDTOList,groupDTO);
+    }
 
+    @Test
+    public void testDelRolesFromGroup() throws Exception {
+        List<SysRoleDTO> roleDTOList = new ArrayList<>();
+        SysRoleDTO roleDTO01 = new SysRoleDTO();
+        roleDTO01.setId("r1");
+        SysRoleDTO roleDTO02 = new SysRoleDTO();
+        roleDTO02.setId("r2");
+        SysRoleDTO roleDTO03 = new SysRoleDTO();
+        roleDTO03.setId("r3");
+        roleDTOList.add(roleDTO01);
+        roleDTOList.add(roleDTO02);
+        roleDTOList.add(roleDTO03);
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("tvfVwg9YMc0D-5x_Al4aPg");
+        sysGroupService.delRolesFromGroup(roleDTOList,groupDTO);
+    }
+
+    @Test
+    public void testReAllocateRolesToGroup() throws Exception {
+        List<SysRoleDTO> roleDTOList = new ArrayList<>();
+        SysRoleDTO roleDTO01 = new SysRoleDTO();
+        roleDTO01.setId("r6");
+        SysRoleDTO roleDTO02 = new SysRoleDTO();
+        roleDTO02.setId("r7");
+        SysRoleDTO roleDTO03 = new SysRoleDTO();
+        roleDTO03.setId("r8");
+        roleDTOList.add(roleDTO01);
+        roleDTOList.add(roleDTO02);
+        roleDTOList.add(roleDTO03);
+        SysGroupDTO groupDTO = new SysGroupDTO();
+        groupDTO.setId("tvfVwg9YMc0D-5x_Al4aPg");
+        sysGroupService.reAllocateRolesToGroup(roleDTOList,groupDTO);
+    }
 
 
 

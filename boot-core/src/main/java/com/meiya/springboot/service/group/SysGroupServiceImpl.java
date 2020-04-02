@@ -117,11 +117,13 @@ public class SysGroupServiceImpl implements SysGroupService {
     public void addUsersToGroup(List<SysUserDTO> userDTOList, SysGroupDTO groupDTO) throws Exception {
         Validate.notEmpty(userDTOList, "待分配的用户列表不允许为空");
         Validate.notNull(groupDTO, "用户组不能为空");
+        Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
 
         List<SysUserGroup> userGroupList = new ArrayList<>(userDTOList.size());
         String groupId = groupDTO.getId();
 
         userDTOList.forEach(userDTO -> {
+            Validate.notBlank(userDTO.getId(), "用户ID不能为空");
             SysUserGroup userGroup = new SysUserGroup();
             userGroup.setUserId(userDTO.getId());
             userGroup.setGroupId(groupId);
@@ -140,7 +142,7 @@ public class SysGroupServiceImpl implements SysGroupService {
     public void delUsersFromGroup(List<SysUserDTO> userDTOList, SysGroupDTO groupDTO) throws Exception {
         Validate.notEmpty(userDTOList, "待分配的用户列表不允许为空");
         Validate.notNull(groupDTO, "用户组不能为空");
-
+        Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         Set<String> userIdSet =userDTOList.stream().map(SysUserDTO::getId).collect(Collectors.toSet());
         String groupId = groupDTO.getId();
 
@@ -159,7 +161,7 @@ public class SysGroupServiceImpl implements SysGroupService {
     public void reAllocateUsersToGroup(List<SysUserDTO> userDTOList, SysGroupDTO groupDTO) throws Exception {
         Validate.notEmpty(userDTOList, "待分配的用户列表不允许为空");
         Validate.notNull(groupDTO, "用户组不能为空");
-
+        Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         String groupId = groupDTO.getId();
         sysUserGroupMapper.deleteByMap(Collections.singletonMap("GROUP_ID", groupId));
 
@@ -183,7 +185,7 @@ public class SysGroupServiceImpl implements SysGroupService {
     public void addRolesToGroup(List<SysRoleDTO> sysRoleDTOList, SysGroupDTO groupDTO) throws Exception {
         Validate.notEmpty(sysRoleDTOList, "待分配的角色列表不允许为空");
         Validate.notNull(groupDTO, "用户组不能为空");
-
+        Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         List<SysGroupRole> groupRoleList = new ArrayList<>(sysRoleDTOList.size());
         String groupId = groupDTO.getId();
 
@@ -206,7 +208,7 @@ public class SysGroupServiceImpl implements SysGroupService {
     public void delRolesFromGroup(List<SysRoleDTO> sysRoleDTOList, SysGroupDTO groupDTO) throws Exception {
         Validate.notEmpty(sysRoleDTOList, "待分配的角色列表不允许为空");
         Validate.notNull(groupDTO, "用户组不能为空");
-
+        Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         Set<String> roleIdSet =sysRoleDTOList.stream().map(SysRoleDTO::getId).collect(Collectors.toSet());
         String groupId = groupDTO.getId();
 
@@ -225,7 +227,7 @@ public class SysGroupServiceImpl implements SysGroupService {
     public void reAllocateRolesToGroup(List<SysRoleDTO> sysRoleDTOList, SysGroupDTO groupDTO) throws Exception {
         Validate.notEmpty(sysRoleDTOList, "待分配的角色列表不允许为空");
         Validate.notNull(groupDTO, "用户组不能为空");
-
+        Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         String groupId = groupDTO.getId();
         sysGroupRoleMapper.deleteByMap(Collections.singletonMap("GROUP_ID", groupId));
 
