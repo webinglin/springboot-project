@@ -1,6 +1,5 @@
 package com.meiya.springboot.service.user;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.meiya.springboot.bean.SysUser;
 import com.meiya.springboot.bean.SysUserDept;
 import com.meiya.springboot.bean.SysUserGroup;
@@ -234,31 +233,31 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void editUserRole(SysUserDTO userDTO) throws Exception {
+    public void reAllocateRoleToUser(SysUserDTO userDTO) throws Exception {
         userRoleMapper.deleteByMap(getDelUserIdMap(userDTO.getId()));
         // 重新添加用户-角色关系
         addUserRole(userDTO);
     }
 
     @Override
-    public void editUserGroup(SysUserDTO userDTO) throws Exception {
+    public void reAllocateGroupToUser(SysUserDTO userDTO) throws Exception {
         userGroupMapper.deleteByMap(getDelUserIdMap(userDTO.getId()));
         // 重新添加用户-用户组关系
         addUserGoup(userDTO);
     }
 
     @Override
-    public void editUserDept(SysUserDTO userDTO) throws Exception {
+    public void reAllocateDeptToUser(SysUserDTO userDTO) throws Exception {
         userDeptMapper.deleteByMap(getDelUserIdMap(userDTO.getId()));
         // 重新添加用户-单位关系
         addUserDept(userDTO);
     }
 
     @Override
-    public void editUserAll(SysUserDTO userDTO) throws Exception {
+    public void reAllocateAll(SysUserDTO userDTO) throws Exception {
         editUser(userDTO);
-        editUserDept(userDTO);
-        editUserRole(userDTO);
-        editUserGroup(userDTO);
+        reAllocateDeptToUser(userDTO);
+        reAllocateRoleToUser(userDTO);
+        reAllocateGroupToUser(userDTO);
     }
 }

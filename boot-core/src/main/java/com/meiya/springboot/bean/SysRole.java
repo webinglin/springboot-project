@@ -21,6 +21,7 @@ public class SysRole {
 
     private String updatorId;
 
+    /* 当前角色可以授权哪些角色 */
     private String authRoles;
 
     public String getId() {

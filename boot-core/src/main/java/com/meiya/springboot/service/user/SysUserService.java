@@ -32,24 +32,28 @@ public interface SysUserService {
     void editUser(SysUserDTO userDTO) throws Exception;
 
     /**
+     * 重新关联用户-角色关系
      * 只编辑用户-角色
      */
-    void editUserRole(SysUserDTO userDTO) throws Exception;
+    void reAllocateRoleToUser(SysUserDTO userDTO) throws Exception;
 
     /**
+     * 重新关联用户-用户组的关系
      * 只编辑用户-用户组
      */
-    void editUserGroup(SysUserDTO userDTO) throws Exception;
+    void reAllocateGroupToUser(SysUserDTO userDTO) throws Exception;
 
     /**
+     * 重新关联用户-单位的数据
      * 只编辑用户-单位
      */
-    void editUserDept(SysUserDTO userDTO) throws Exception;
+    void reAllocateDeptToUser(SysUserDTO userDTO) throws Exception;
 
     /**
+     * 重新关联用户相关的所有数据（角色/用户组/单位）
      * 更新用户所有信息，包括 用户-角色，用户-用户组，用户-单位
      */
-    void editUserAll(SysUserDTO userDTO) throws Exception;
+    void reAllocateAll(SysUserDTO userDTO) throws Exception;
 
 
 }

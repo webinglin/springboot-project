@@ -10,7 +10,6 @@ import com.meiya.springboot.service.group.SysGroupService;
 import com.meiya.springboot.service.privilege.SysPrivilegeService;
 import com.meiya.springboot.service.role.SysRoleService;
 import com.meiya.springboot.service.user.SysUserService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,7 +187,7 @@ public class JunitSpringWebApplicationTest {
         userRoleList.add(r2);
         userDTO.setRoleList(userRoleList);
 
-        sysUserService.editUserAll(userDTO);
+        sysUserService.reAllocateAll(userDTO);
     }
 
     @Test
