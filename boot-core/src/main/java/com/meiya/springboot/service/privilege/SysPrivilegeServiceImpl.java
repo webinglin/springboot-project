@@ -3,6 +3,7 @@ package com.meiya.springboot.service.privilege;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.meiya.springboot.bean.*;
 import com.meiya.springboot.common.util.StringUtil;
+import com.meiya.springboot.constants.FieldConstants;
 import com.meiya.springboot.mapper.group.SysGroupRoleMapper;
 import com.meiya.springboot.mapper.privilege.SysPrivilegeMapper;
 import com.meiya.springboot.mapper.role.SysRolePrivilegeMapper;
@@ -45,13 +46,13 @@ public class SysPrivilegeServiceImpl implements SysPrivilegeService {
             roleIdSet = new HashSet<>();
         }
         // 查询用户所有的角色
-        Map<String,Object> selectMap = Collections.singletonMap("USER_ID", userId);
+        Map<String,Object> selectMap = Collections.singletonMap(FieldConstants.USER_ID, userId);
         // 合并用户组关联的角色 和 用户直接关联的角色
         roleIdSet.addAll(sysUserRoleMapper.selectByMap(selectMap).stream().map(SysUserRole::getRoleId).collect(Collectors.toSet()));
 
         // 根据角色ID查询所有的权限
         QueryWrapper<SysRolePrivilege> rolePrivilegeQueryWrapper = new QueryWrapper<>();
-        rolePrivilegeQueryWrapper.in("ROLE_ID", roleIdSet);
+        rolePrivilegeQueryWrapper.in(FieldConstants.ROLE_ID, roleIdSet);
         Set<String> privilegeIdSet = sysRolePrivilegeMapper.selectList(rolePrivilegeQueryWrapper).stream().map(SysRolePrivilege::getPrivilegeId).collect(Collectors.toSet());
         if(CollectionUtils.isEmpty(privilegeIdSet)){
             return new ArrayList<>();
@@ -63,7 +64,7 @@ public class SysPrivilegeServiceImpl implements SysPrivilegeService {
     @Override
     public Set<String> queryUserGroupRoleIdSet(String userId) throws Exception {
         // 查询用户具备的所有用户组
-        Map<String,Object> selectMap = Collections.singletonMap("USER_ID", userId);
+        Map<String,Object> selectMap = Collections.singletonMap(FieldConstants.USER_ID, userId);
         List<SysUserGroup> userGroupList = sysUserGroupMapper.selectByMap(selectMap);
         Set<String> groupIdSet = userGroupList.stream().map(SysUserGroup::getGroupId).collect(Collectors.toSet());
         if(CollectionUtils.isEmpty(groupIdSet)){
@@ -71,7 +72,7 @@ public class SysPrivilegeServiceImpl implements SysPrivilegeService {
         }
         // 查询用户组具备的角色
         QueryWrapper<SysGroupRole> wrapper = new QueryWrapper<>();
-        wrapper.in("GROUP_ID", groupIdSet);
+        wrapper.in(FieldConstants.GROUP_ID, groupIdSet);
         List<SysGroupRole> groupRoleList = sysGroupRoleMapper.selectList(wrapper);
         return groupRoleList.stream().map(SysGroupRole::getRoleId).collect(Collectors.toSet());
     }

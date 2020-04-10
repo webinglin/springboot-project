@@ -6,6 +6,7 @@ import com.meiya.springboot.bean.SysGroupRole;
 import com.meiya.springboot.bean.SysUserGroup;
 import com.meiya.springboot.common.util.StringUtil;
 import com.meiya.springboot.constants.BizConstants;
+import com.meiya.springboot.constants.FieldConstants;
 import com.meiya.springboot.dto.SysGroupDTO;
 import com.meiya.springboot.dto.SysRoleDTO;
 import com.meiya.springboot.dto.SysUserDTO;
@@ -86,7 +87,7 @@ public class SysGroupServiceImpl implements SysGroupService {
         sysGroupMapper.updateById(sysGroup);
 
         // 删除用户组相关的用户关系数据和 角色关系数据
-        Map<String,Object> delMap = Collections.singletonMap("GROUP_ID", groupId);
+        Map<String,Object> delMap = Collections.singletonMap(FieldConstants.GROUP_ID, groupId);
         sysGroupRoleMapper.deleteByMap(delMap);
         sysUserGroupMapper.deleteByMap(delMap);
     }
@@ -147,7 +148,7 @@ public class SysGroupServiceImpl implements SysGroupService {
         String groupId = groupDTO.getId();
 
         UpdateWrapper<SysUserGroup> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("GROUP_ID", groupId).in("USER_ID", userIdSet);
+        updateWrapper.eq(FieldConstants.GROUP_ID, groupId).in(FieldConstants.USER_ID, userIdSet);
         sysUserGroupMapper.delete(updateWrapper);
     }
 
@@ -163,7 +164,7 @@ public class SysGroupServiceImpl implements SysGroupService {
         Validate.notNull(groupDTO, "用户组不能为空");
         Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         String groupId = groupDTO.getId();
-        sysUserGroupMapper.deleteByMap(Collections.singletonMap("GROUP_ID", groupId));
+        sysUserGroupMapper.deleteByMap(Collections.singletonMap(FieldConstants.GROUP_ID, groupId));
 
         List<SysUserGroup> userGroupList = new ArrayList<>(userDTOList.size());
         userDTOList.forEach(userDTO -> {
@@ -213,7 +214,7 @@ public class SysGroupServiceImpl implements SysGroupService {
         String groupId = groupDTO.getId();
 
         UpdateWrapper<SysGroupRole> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("GROUP_ID", groupId).in("ROLE_ID", roleIdSet);
+        updateWrapper.eq(FieldConstants.GROUP_ID, groupId).in(FieldConstants.ROLE_ID, roleIdSet);
         sysGroupRoleMapper.delete(updateWrapper);
     }
 
@@ -229,7 +230,7 @@ public class SysGroupServiceImpl implements SysGroupService {
         Validate.notNull(groupDTO, "用户组不能为空");
         Validate.notBlank(groupDTO.getId(), "用户组ID不能为空");
         String groupId = groupDTO.getId();
-        sysGroupRoleMapper.deleteByMap(Collections.singletonMap("GROUP_ID", groupId));
+        sysGroupRoleMapper.deleteByMap(Collections.singletonMap(FieldConstants.GROUP_ID, groupId));
 
         List<SysGroupRole> groupRoleList = new ArrayList<>(sysRoleDTOList.size());
         sysRoleDTOList.forEach(roleDTO -> {

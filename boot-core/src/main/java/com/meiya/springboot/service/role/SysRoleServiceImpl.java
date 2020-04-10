@@ -6,6 +6,8 @@ import com.meiya.springboot.bean.SysRole;
 import com.meiya.springboot.bean.SysRolePrivilege;
 import com.meiya.springboot.common.util.StringUtil;
 import com.meiya.springboot.constants.BizConstants;
+import com.meiya.springboot.constants.FieldConstants;
+import com.meiya.springboot.dto.SysDeptDTO;
 import com.meiya.springboot.dto.SysPrivilegeDTO;
 import com.meiya.springboot.dto.SysRoleDTO;
 import com.meiya.springboot.mapper.group.SysGroupRoleMapper;
@@ -41,6 +43,38 @@ public class SysRoleServiceImpl implements SysRoleService {
     private SysGroupRoleMapper sysGroupRoleMapper;
 
     /**
+     * 校验名称是否重复
+     * @param sysRoleDTO   需要校验的角色信息
+     */
+    private void validRepeatName(SysRoleDTO sysRoleDTO) throws IllegalArgumentException{
+        Validate.notBlank(sysRoleDTO.getId(), "角色ID不允许为空");
+        Validate.notBlank(sysRoleDTO.getRoleName(), "角色名称不允许为空");
+
+        Map<String,Object> nameMap = new HashMap<>();
+        nameMap.put(FieldConstants.STATUS, BizConstants.STATUS_AVAIL);
+        nameMap.put(FieldConstants.ROLE_NAME, sysRoleDTO.getRoleName());
+        if(CollectionUtils.isNotEmpty(sysRoleMapper.selectByMap(nameMap))){
+            throw new IllegalArgumentException("角色名称重复");
+        }
+    }
+
+    /**
+     * 校验编码是否重复
+     * @param sysRoleDTO   需要校验的角色信息
+     */
+    private void validRepeatCode(SysRoleDTO sysRoleDTO) throws IllegalArgumentException{
+        Validate.notBlank(sysRoleDTO.getId(), "角色ID不允许为空");
+        Validate.notBlank(sysRoleDTO.getRoleCode(), "角色编码不允许为空");
+
+        Map<String,Object> nameMap = new HashMap<>();
+        nameMap.put(FieldConstants.STATUS, BizConstants.STATUS_AVAIL);
+        nameMap.put(FieldConstants.ROLE_CODE, sysRoleDTO.getRoleCode());
+        if(CollectionUtils.isNotEmpty(sysRoleMapper.selectByMap(nameMap))){
+            throw new IllegalArgumentException("角色编码重复");
+        }
+    }
+
+    /**
      * 添加角色
      *
      * @param sysRoleDTO 添加角色信息
@@ -56,7 +90,15 @@ public class SysRoleServiceImpl implements SysRoleService {
         Validate.notBlank(sysRoleDTO.getRoleName(), "角色名称不能为空");
         Validate.notBlank(sysRoleDTO.getRoleCode(), "角色编码不能为空");
 
+        // 编码不能够重复
+        validRepeatCode(sysRoleDTO);
+        // 名称不能够重复
+        validRepeatName(sysRoleDTO);
+
         sysRoleDTO.setCreateTime(new Date());
+        sysRoleDTO.setUpdateTime(sysRoleDTO.getCreateTime());
+        sysRoleDTO.setStatus(BizConstants.STATUS_AVAIL);
+
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(sysRoleDTO,sysRole);
         sysRoleMapper.insert(sysRole);
@@ -74,10 +116,11 @@ public class SysRoleServiceImpl implements SysRoleService {
         SysRole sysRole = new SysRole();
         sysRole.setId(roleId);
         sysRole.setUpdateTime(new Date());
+        sysRole.setStatus(BizConstants.STATUS_DEL);
         sysRoleMapper.updateById(sysRole);
 
         // 删除角色相关的 用户组-角色关系 角色-权限关系 用户-角色关系
-        Map<String,Object> delMap = Collections.singletonMap("ROLE_ID", roleId);
+        Map<String,Object> delMap = Collections.singletonMap(FieldConstants.ROLE_ID, roleId);
         sysUserRoleMapper.deleteByMap(delMap);
         sysRolePrivilegeMapper.deleteByMap(delMap);
         sysGroupRoleMapper.deleteByMap(delMap);
@@ -97,14 +140,16 @@ public class SysRoleServiceImpl implements SysRoleService {
         Validate.notBlank(sysRoleDTO.getRoleCode(), "角色编码不能为空");
 
         // 根据编码查询，且ID不等于当前的角色ID 不允许存在重复的编码
-        QueryWrapper<SysRole> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("ROLE_CODE",sysRoleDTO.getRoleCode()).ne("ID", sysRoleDTO.getId()).eq("STATUS", BizConstants.STATUS_AVAIL);
-        List<SysRole> sysRoleList = sysRoleMapper.selectList(queryWrapper);
-        if(CollectionUtils.isNotEmpty(sysRoleList)){
-            throw new IllegalArgumentException("角色编码不允许重复");
+        SysRole sysRole = sysRoleMapper.selectById(sysRoleDTO.getId());
+        Validate.notNull(sysRole, "编辑的角色信息不存在");
+
+        if(!sysRoleDTO.getRoleCode().equals(sysRole.getRoleCode())){
+            validRepeatCode(sysRoleDTO);
+        }
+        if(!sysRoleDTO.getRoleName().equals(sysRole.getRoleName())){
+            validRepeatName(sysRoleDTO);
         }
 
-        SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(sysRoleDTO, sysRole);
         sysRole.setUpdateTime(new Date());
         sysRoleMapper.updateById(sysRole);
@@ -152,7 +197,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         String roleId = sysRoleDTO.getId();
 
         UpdateWrapper<SysRolePrivilege> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("ROLE_ID", roleId).in("PRIVILEGE_ID", privilegeIdSet);
+        updateWrapper.eq(FieldConstants.ROLE_ID, roleId).in(FieldConstants.PRIVILEGE_ID, privilegeIdSet);
         sysRolePrivilegeMapper.delete(updateWrapper);
     }
 
@@ -169,7 +214,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         Validate.notBlank(sysRoleDTO.getId(), "角色ID不能为空");
 
         String roleId = sysRoleDTO.getId();
-        sysRolePrivilegeMapper.deleteByMap(Collections.singletonMap("ROLE_ID", roleId));
+        sysRolePrivilegeMapper.deleteByMap(Collections.singletonMap(FieldConstants.ROLE_ID, roleId));
 
         List<SysRolePrivilege> rolePrivilegeList = new ArrayList<>(privilegeDTOList.size());
         privilegeDTOList.forEach(privilegeDTO -> {

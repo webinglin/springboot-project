@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 权限逻辑定义
  * @author linwb
  * @since 2020/3/18
  */
@@ -23,5 +24,8 @@ public interface SysPrivilegeService {
      */
     Set<String> queryUserGroupRoleIdSet(String userId) throws Exception;
 
+
+
+    // TODO CRUD
 
 }

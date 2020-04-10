@@ -1,9 +1,6 @@
 import com.meiya.springboot.SpringWebApplication;
 import com.meiya.springboot.bean.*;
-import com.meiya.springboot.dto.SysAreaDTO;
-import com.meiya.springboot.dto.SysGroupDTO;
-import com.meiya.springboot.dto.SysRoleDTO;
-import com.meiya.springboot.dto.SysUserDTO;
+import com.meiya.springboot.dto.*;
 import com.meiya.springboot.service.area.SysAreaService;
 import com.meiya.springboot.service.dept.SysDeptService;
 import com.meiya.springboot.service.group.SysGroupService;
@@ -371,23 +368,39 @@ public class JunitSpringWebApplicationTest {
         sysGroupService.reAllocateRolesToGroup(roleDTOList,groupDTO);
     }
 
+    @Test
+    public void testAddDept() throws Exception {
+        SysDeptDTO deptDTO = new SysDeptDTO();
+        deptDTO.setName("单位03");
+        deptDTO.setAddress("地址03");
+        deptDTO.setParentId("0000000000000000000000");
+        deptDTO.setCode("350625000000");
+        deptDTO.setCreatorId("CREATOR_ID");
 
+        sysDeptService.addSysDept(deptDTO);
+    }
 
-    // 用户组有哪些角色
-    // 用户组有哪些用户
-    // 区域有哪些单位
-    // 单位有哪些用户
-    // 单位属于什么区域
-    // 用户具备什么角色
-    // 用户具备什么权限
-    // 用户具备什么用户组
-    // 用户具备什么单位
-    // 角色有那些权限
-    // 角色有那些用户组
+    @Test
+    public void testDelDept() throws Exception {
+        SysDeptDTO deptDTO = new SysDeptDTO();
+        deptDTO.setId("1");
 
-    // 添加/修改/删除 用户
-    // 添加/修改/删除 用户组
-    // 添加/修改/删除 角色
-    // 添加/修改/删除 权限
-    // 添加/修改/删除 区域
+        sysDeptService.delSysDept(deptDTO);
+    }
+
+    @Test
+    public void testEditDept() throws Exception {
+        SysDeptDTO deptDTO = new SysDeptDTO();
+        deptDTO.setName("单位03");
+        deptDTO.setCode("350625000000");
+        deptDTO.setId("jHuzaWk436WjQyHpO2qmxA");
+
+        deptDTO.setParentId("1|99|");
+        deptDTO.setAliasName("单位03的别名");
+        deptDTO.setAreaId("");
+
+        sysDeptService.editSysDep(deptDTO);
+
+    }
+
 }
