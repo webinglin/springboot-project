@@ -1,3 +1,21 @@
+
+// 上传 springboot 通用基础包到私服
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url:'http://localhost:8081/nexus/content/repositories/releases/'){
+                authentication(userName: 'admin', password: 'admin123')
+            }
+            pom.groupId = 'springboot'
+            pom.version = '1.0.0.RELEASE'
+            pom.artifactId = 'boot-core'
+            pom.packaging = 'jar'
+        }
+    }
+}
+
+
 /* 主要是Mariadb相關的基礎功能邏輯 */
 dependencies {
 
